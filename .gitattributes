@@ -1,0 +1,12 @@
+# Maven Wrapper
+/mvnw text eol=lf
+*.cmd text eol=crlf
+
+# Java / Config files
+*.java text eol=lf
+*.xml  text eol=lf
+*.yml  text eol=lf
+*.properties text eol=lf
+
+# Others
+*.sh text eol=lf
