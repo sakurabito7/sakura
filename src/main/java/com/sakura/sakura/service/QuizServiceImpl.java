@@ -1,16 +1,16 @@
 package com.sakura.sakura.service;
 
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sakura.sakura.entity.Quiz;
 import com.sakura.sakura.repository.QuizRepository;
 
 @Service
+@Transactional
 public class QuizServiceImpl implements QuizService {
 
 	// DI
