@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クイズアプリ！</title>
+</head>
+<body>
+    <h1>アプリでCRUD！</h1>
+    <h3 th:text="${title}">タイトル</h3>
+    <p th:if="${complete}" th:text="${complete}" style="color:blue"></p>
+    
+    <form method="post" 
+    th:action="${quizForm.newQuiz} ? @{/quiz/insert} : @{/quiz/update}" 
+    th:object="${quizForm}">
+
+        <label>クイズの内容</label><br>
+        <textarea rows="5" cols=""50" th:field="*{question}"></textarea><br>
+        <div th:if="${#fields.hasErrors('question')}" therrors="*{question}" style="color:red"></div>
+
+        <labal>クイズの回答：</labal>
+        <input type="radio" value="true" th:field="*{answer}">「〇」
+        <input type="radio" value="false" th:field="*{answer}">「×」
+        <br>
+        <div th:if="${#fields.hasErrors('answer')}" therrors="*{answer}" style="color:red"></div>
+
+        <label>作成者</label><br>
+        <input type="text" th:field="*{author}"><br>
+        <div th:if="${#fields.hasErrors('author')}" therrors="*{author}" style="color:red"></div>
+
+        <input type="hidden" th:if="${id}" th:field="*{id}">
+        <input type="submit" value="送信">>
+    </form>
+    <hr>
+    <div th:if="${quizForm.newQuiz}" style="margin:10px">
+    <h3>登録クイズ一覧<a th:href="@{/quiz/play}">プレイ</a><br></h3>
+    <p th:if="${delcomplete}" th:text="${delcomplete}" style="color:blue"></p>
+    <p th:if="${msg}" th:text="${msg}" style="color:red"></p>
+    <table border="1" th:unless="${#lists.isEmpty(list)}" style="table-layout: fixed;">
+        <tr>
+            <th>ID</th>
+            <th>内容</th>
+            <th>解答</th>
+            <th>作成者</th>
+            <th>編集</th>
+            <th>削除</th>
+        </tr>
+        <tr th:each="obj : ${list}" align="center">
+            <td th:text="${obj.id}"></td>
+            <td th:text="${obj.question}" align="left"></td>
+            <td th:text="${obj.answer ? '〇' : '×'}"></td>
+            <td th:text="${obj.author}"></td>
+            <td>
+                <form method="GET" th:action="@{/quiz/{id}(id=${obj.id})}">
+                    <input type="submit" value="編集">
+                </form>
+            </td>
+            <td>
+                <form method="POST" th:action="@{/quiz/delete}">
+                    <input type="hidden" name="id" th:value="${obj.id}">
+                    <input type="submit" value="削除">
+                </form>
+            </td>
+        </tr>
+    </table>
+    <div th:if="${#lists.isEmpty(list)}" style="color:blue">登録クイズはありません。</div>
+    </div>
+    <p th:unless="${quizForm.newQuiz}">
+        <a href="#" th:href="@{/quiz}">CRUD画面へ戻る</a>
+    </p>
+</div>
+</body>
+</html>
