@@ -35,7 +35,7 @@
 <body>
     <h1>「〇×クイズ」アプリ：CRUD</h1>
     <h3 th:text="${title}">タイトル</h3>
-    <p th:if="${complete}" th:text="${complete}" style="color:blue"></p>
+    <p th:if="${resultMessage}" th:text="${resultMessage}" style="color:blue"></p>
     
     <form method="post"
           th:action="${quizForm.newQuiz}? @{/quiz/insert} : @{/quiz/update}" 
@@ -64,9 +64,9 @@
         <h3>登録クイズ一覧：
             <a th:href="@{/quiz/play}">プレイ</a><br>
         </h3>
-        <p th:if="${delcomplete}" th:text="${delcomplete}" style="color:blue"></p>
+        <p th:if="${delresultMessage}" th:text="${delresultMessage}" style="color:blue"></p>
         <p th:if="${msg}" th:text="${msg}" style="color:red"></p>
-        <table border="1" th:unless="${#lists.isEmpty(list)}" style="table-layout: fixed;">
+        <table border="1" th:unless="${#lists.isEmpty(quizlist)}" style="table-layout: fixed;">
             <tr>
                 <th>ID</th>
                 <th>内容</th>
@@ -75,7 +75,7 @@
                 <th>編集</th>
                 <th>削除</th>
             </tr>
-            <tr th:each="obj : ${list}" align="center">
+            <tr th:each="obj : ${quizlist}" align="center">
                 <td th:text="${obj.id}"></td>
                 <td th:text="${obj.question}" align="left"></td>
                 <td th:text="${obj.answer ? '〇' : '×'}"></td>
@@ -93,7 +93,7 @@
                 </td>
             </tr>
         </table>
-        <p th:if="${#lists.isEmpty(list)}">登録されているクイズはありません</p>
+        <p th:if="${#lists.isEmpty(quizlist)}">登録されているクイズはありません</p>
     </div>
     <p th:unless="${quizForm.newQuiz}">
         <a href="#"  th:href="@{/quiz}">CRUD画面へ戻る</a>
