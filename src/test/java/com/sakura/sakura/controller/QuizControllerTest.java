@@ -50,7 +50,7 @@ public class QuizControllerTest {
         String view = quizController.showList(form, model);
 
         assertThat(view).isEqualTo("crud");
-        verify(model).addAttribute("list", quizList);
+        verify(model).addAttribute("quizlist", quizList);
         verify(model).addAttribute("title", "登録用フォーム");
     }
 
@@ -66,7 +66,7 @@ public class QuizControllerTest {
         String result = quizController.insert(form, bindingResult, model, redirectAttributes);
 
         verify(quizService).insertQuiz(any(Quiz.class));
-        verify(redirectAttributes).addFlashAttribute(eq("complete"), anyString());
+        verify(redirectAttributes).addFlashAttribute(eq("resultMessage"), anyString());
         assertThat(result).isEqualTo("redirect:/quiz");
     }
 
@@ -96,7 +96,7 @@ public class QuizControllerTest {
         String view = quizController.delete("1", model, redirectAttributes);
 
         verify(quizService).deleteQuizById(1);
-        verify(redirectAttributes).addFlashAttribute("delcomplete", "削除が完了しました。");
+        verify(redirectAttributes).addFlashAttribute("delresultMessage", "削除が完了しました。");
         assertThat(view).isEqualTo("redirect:/quiz");
     }
 }
