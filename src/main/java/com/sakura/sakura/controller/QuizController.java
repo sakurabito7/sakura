@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.modelmapper.ModelMapper;
 
 import com.sakura.sakura.entity.Quiz;
 import com.sakura.sakura.form.QuizForm;
@@ -54,13 +53,13 @@ public class QuizController {
 	public String insert(@Validated QuizForm quizForm, BindingResult bindingResult, Model model,
 			RedirectAttributes redirectAttributes) {
 		// FormからDataへの詰め替え
-//		Quiz quiz = new Quiz();
-//		quiz.setQuestion(quizForm.getQuestion());
-//		quiz.setAnswer(quizForm.getAnswer());
-//		quiz.setAuthor(quizForm.getAuthor());
+		Quiz quiz = new Quiz();
+		quiz.setQuestion(quizForm.getQuestion());
+		quiz.setAnswer(quizForm.getAnswer());
+		quiz.setAuthor(quizForm.getAuthor());
 
-		ModelMapper mapper = new ModelMapper();
-		Quiz quiz = mapper.map(quizForm, Quiz.class);
+//		ModelMapper mapper = new ModelMapper();
+//		Quiz quiz = mapper.map(quizForm, Quiz.class);
 		// 入力チェック
 		if (!bindingResult.hasErrors()) {
 			service.insertQuiz(quiz);
@@ -144,31 +143,31 @@ public class QuizController {
 	}
 
 	private Quiz makeQuiz(QuizForm quizForm) {
-//		Quiz quiz = new Quiz();
-//		quiz.setId(quizForm.getId());
-//		quiz.setQuestion(quizForm.getQuestion());
-//		quiz.setAnswer(quizForm.getAnswer());
-//		quiz.setAuthor(quizForm.getAuthor());
+		Quiz quiz = new Quiz();
+		quiz.setId(quizForm.getId());
+		quiz.setQuestion(quizForm.getQuestion());
+		quiz.setAnswer(quizForm.getAnswer());
+		quiz.setAuthor(quizForm.getAuthor());
 		
-		// Formからｄａｔａへの詰め替え
-		ModelMapper mapper = new ModelMapper();
-		Quiz quiz = mapper.map(quizForm, Quiz.class);
+		// FormからDataへの詰め替え
+//		ModelMapper mapper = new ModelMapper();
+//		Quiz quiz = mapper.map(quizForm, Quiz.class);
 		
 		// 
 		return quiz;
 	}
 
 	private QuizForm makeQuizForm(Quiz quiz) {
-//		QuizForm form = new QuizForm();
-//		form.setId(quiz.getId());
-//		form.setQuestion(quiz.getQuestion());
-//		form.setAnswer(quiz.getAnswer());
-//		form.setAuthor(quiz.getAuthor());
-//		form.setNewQuiz(false);
+  		QuizForm form = new QuizForm();
+		form.setId(quiz.getId());
+		form.setQuestion(quiz.getQuestion());
+		form.setAnswer(quiz.getAnswer());
+		form.setAuthor(quiz.getAuthor());
+		form.setNewQuiz(false);
 		
-		// ｄａｔａからFormへの詰め替え
-		ModelMapper mapper = new ModelMapper();
-		QuizForm form = mapper.map(quiz, QuizForm.class);
+		// DataからFormへの詰め替え
+		//ModelMapper mapper = new ModelMapper();
+		//QuizForm form = mapper.map(quiz, QuizForm.class);
 		form.setNewQuiz(false);
 		return form;
 	}
