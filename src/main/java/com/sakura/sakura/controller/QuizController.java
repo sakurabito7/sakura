@@ -43,7 +43,7 @@ public class QuizController {
 		quizForm.setNewQuiz(true);
 		// 掲示板の一覧取得
 		Iterable<Quiz> list = service.selectAll();
-		model.addAttribute("list", list);
+		model.addAttribute("quizlist", list);
 		model.addAttribute("title", "登録用フォーム");
 		return "crud";
 	}
@@ -52,15 +52,18 @@ public class QuizController {
 	@PostMapping("/insert")
 	public String insert(@Validated QuizForm quizForm, BindingResult bindingResult, Model model,
 			RedirectAttributes redirectAttributes) {
-		// FormからEntityへの詰め替え
+		// FormからDataへの詰め替え
 		Quiz quiz = new Quiz();
 		quiz.setQuestion(quizForm.getQuestion());
 		quiz.setAnswer(quizForm.getAnswer());
 		quiz.setAuthor(quizForm.getAuthor());
+
+//		ModelMapper mapper = new ModelMapper();
+//		Quiz quiz = mapper.map(quizForm, Quiz.class);
 		// 入力チェック
 		if (!bindingResult.hasErrors()) {
 			service.insertQuiz(quiz);
-			redirectAttributes.addFlashAttribute("complete", "登録が完了しました。");
+			redirectAttributes.addFlashAttribute("resultMessage", "登録が完了しました。");
 			return "redirect:/quiz";
 		} else {
 			return showList(quizForm, model);
@@ -96,7 +99,7 @@ public class QuizController {
 		Quiz quiz = makeQuiz(quizForm);
 		if (!result.hasErrors()) {
 			service.updateQuiz(quiz);
-			redirectAttributes.addFlashAttribute("complete", "更新が終了しました。");
+			redirectAttributes.addFlashAttribute("resultMessage", "更新が終了しました。");
 			return "redirect:/quiz/" + quiz.getId();
 		} else {
 			makeUpdateModel(quizForm, model);
@@ -130,12 +133,12 @@ public class QuizController {
 		}
 		return "answer";
 	}
-	
+
 	// 削除
 	@PostMapping("/delete")
-	public String delete(@RequestParam("id") String id,Model model,RedirectAttributes redirectAttributes) {
+	public String delete(@RequestParam("id") String id, Model model, RedirectAttributes redirectAttributes) {
 		service.deleteQuizById(Integer.parseInt(id));
-		redirectAttributes.addFlashAttribute("delcomplete","削除が完了しました。");
+		redirectAttributes.addFlashAttribute("delresultMessage", "削除が完了しました。");
 		return "redirect:/quiz";
 	}
 
@@ -145,15 +148,26 @@ public class QuizController {
 		quiz.setQuestion(quizForm.getQuestion());
 		quiz.setAnswer(quizForm.getAnswer());
 		quiz.setAuthor(quizForm.getAuthor());
+		
+		// FormからDataへの詰め替え
+//		ModelMapper mapper = new ModelMapper();
+//		Quiz quiz = mapper.map(quizForm, Quiz.class);
+		
+		// 
 		return quiz;
 	}
 
 	private QuizForm makeQuizForm(Quiz quiz) {
-		QuizForm form = new QuizForm();
+  		QuizForm form = new QuizForm();
 		form.setId(quiz.getId());
 		form.setQuestion(quiz.getQuestion());
 		form.setAnswer(quiz.getAnswer());
 		form.setAuthor(quiz.getAuthor());
+		form.setNewQuiz(false);
+		
+		// DataからFormへの詰め替え
+		//ModelMapper mapper = new ModelMapper();
+		//QuizForm form = mapper.map(quiz, QuizForm.class);
 		form.setNewQuiz(false);
 		return form;
 	}
